@@ -1,0 +1,6 @@
+[ssh_servers.test]
+host = "192.168.10.143"
+user = "jhorn"
+password = "Snowman3#"  # or use key_path
+port = 22
+description = "RatOSUbuntu Test"

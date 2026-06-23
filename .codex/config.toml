@@ -1,0 +1,23 @@
+[mcp_servers.ssh-manager]
+command = "node"
+args = ["C:\\Users\\JakeHorn.AzureAD\\AppData\\Roaming\\npm\\node_modules\\mcp-ssh-manager\\src\\index.js"]
+env = { SSH_CONFIG_PATH = "C:\\Projects\\RatOSUbuntu\\.codex\\ssh-config.toml" }
+startup_timeout_ms = 20000
+
+[mcp_servers.ssh-manager.tools.ssh_upload]
+approval_mode = "approve"
+
+[mcp_servers.ssh-manager.tools.ssh_execute]
+approval_mode = "approve"
+
+[mcp_servers.ssh-manager.tools.ssh_execute_sudo]
+approval_mode = "approve"
+
+[mcp_servers.ssh-manager.tools.ssh_service_status]
+approval_mode = "approve"
+
+[mcp_servers.ssh-manager.tools.ssh_tail]
+approval_mode = "approve"
+
+[mcp_servers.ssh-manager.tools.ssh_health_check]
+approval_mode = "approve"
