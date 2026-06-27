@@ -23,10 +23,18 @@ if [[ ! -x "${RATOS_HOME}/klippy-env/bin/python" ]]; then
   as_user virtualenv -p python3 "${RATOS_HOME}/klippy-env"
 fi
 
+# Python 3.12 removed pkgutil.ImpImporter, which older setuptools/pkg_resources
+# still references while building wheels such as older numpy releases.
+as_user "${RATOS_HOME}/klippy-env/bin/python" -m pip install --upgrade pip setuptools wheel
+
 as_user "${RATOS_HOME}/klippy-env/bin/pip" install -r "${RATOS_HOME}/klipper/scripts/klippy-requirements.txt"
 
 # numpy and matplotlib support input shaper and RatOS' analysis helpers.
-as_user "${RATOS_HOME}/klippy-env/bin/pip" install 'numpy<=1.23.4' matplotlib
+if as_user "${RATOS_HOME}/klippy-env/bin/python" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 12) else 1)'; then
+  as_user "${RATOS_HOME}/klippy-env/bin/pip" install 'numpy>=1.26,<2' matplotlib
+else
+  as_user "${RATOS_HOME}/klippy-env/bin/pip" install 'numpy<=1.23.4' matplotlib
+fi
 as_user "${RATOS_HOME}/klippy-env/bin/python" -m compileall "${RATOS_HOME}/klipper/klippy"
 as_user "${RATOS_HOME}/klippy-env/bin/python" "${RATOS_HOME}/klipper/klippy/chelper/__init__.py"
 
