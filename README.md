@@ -20,7 +20,7 @@ scripts expect those paths.
 - Moonraker
 - Mainsail served by nginx
 - RatOS configuration, theme, and configurator
-- Node.js 18 and pnpm for RatOS Configurator
+- Node.js 20 and pnpm for RatOS Configurator
 - Optional Crowsnest, moonraker-timelapse, linear movement analysis,
   KlipperScreen, and Raspberry Pi MCU support
 
