@@ -98,7 +98,7 @@ Important defaults:
 - Crowsnest enabled
 - moonraker-timelapse enabled
 - linear movement analysis enabled
-- KlipperScreen disabled
+- KlipperScreen enabled
 - Raspberry Pi MCU disabled
 - LattePanda IOTA RP2040 MCU disabled
 
