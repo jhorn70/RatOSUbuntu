@@ -17,14 +17,14 @@ Available steps:
   10-node
   20-klipper
   30-moonraker
-  40-ratos
-  50-mainsail
+  40-mainsail
+  50-ratos
   60-extras
   90-enable
 
 Examples:
   sudo ./install.sh
-  sudo ./install.sh 20-klipper 30-moonraker
+  sudo ./install.sh 30-moonraker 40-mainsail 50-ratos
 EOF
 }
 
@@ -51,8 +51,8 @@ DEFAULT_STEPS=(
   10-node
   20-klipper
   30-moonraker
-  40-ratos
-  50-mainsail
+  40-mainsail
+  50-ratos
   60-extras
   90-enable
 )

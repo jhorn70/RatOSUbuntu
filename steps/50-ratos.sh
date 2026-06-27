@@ -54,6 +54,23 @@ done
 ln -sfn ../templates "${RATOS_HOME}/printer_data/config/RatOS/scripts/templates"
 ln -sfn ../boards "${RATOS_HOME}/printer_data/config/RatOS/scripts/boards"
 
+if [[ "${INSTALL_TIMELAPSE}" == "1" ]]; then
+  log "Preparing moonraker-timelapse for RatOS registration"
+  ensure_apt_packages_from_words "${TIMELAPSE_APT_DEPS}"
+  clone_or_update "${TIMELAPSE_REPO}" "${TIMELAPSE_BRANCH}" "${RATOS_HOME}/moonraker-timelapse"
+  as_user ln -sf "${RATOS_HOME}/moonraker-timelapse/klipper_macro/timelapse.cfg" "${RATOS_HOME}/printer_data/config/timelapse.cfg"
+fi
+
+if [[ "${INSTALL_LINEAR_MOVEMENT_ANALYSIS}" == "1" ]]; then
+  log "Preparing Klipper linear movement analysis for RatOS registration"
+
+  # RatOS post-install verifies expected extension registrations, so this
+  # extension must exist before ratos-post-install.sh runs.
+  [[ -x "${RATOS_HOME}/klippy-env/bin/pip" ]] || die "Klipper venv not found. Run 20-klipper before 50-ratos when linear movement analysis is enabled."
+  clone_or_update "${LINEAR_MOVEMENT_ANALYSIS_REPO}" "${LINEAR_MOVEMENT_ANALYSIS_BRANCH}" "${RATOS_HOME}/klipper_linear_movement_analysis"
+  as_user "${RATOS_HOME}/klippy-env/bin/pip" install matplotlib
+fi
+
 # ratos-install.sh and ratos-post-install.sh are intentionally left in the
 # RatOS-configuration repo; that keeps this Ubuntu installer from duplicating
 # RatOS' internal installation logic.

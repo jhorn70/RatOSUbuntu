@@ -50,21 +50,21 @@ Install git if it is not already available, then clone this repository:
 ```bash
 sudo apt-get update
 sudo apt-get install -y git
-cd /tmp
+cd ~
 git clone https://github.com/jhorn70/RatOSUbuntu.git
 ```
 
 Review the config:
 
 ```bash
-cd /tmp/RatOSUbuntu
+cd ~/RatOSUbuntu
+chmod +x install.sh
 nano config.env
 ```
 
 Run the full installer:
 
 ```bash
-chmod +x install.sh
 sudo ./install.sh
 ```
 
@@ -144,7 +144,7 @@ You can rerun one or more phases while debugging:
 
 ```bash
 sudo ./install.sh 20-klipper
-sudo ./install.sh 30-moonraker 40-ratos
+sudo ./install.sh 30-moonraker 40-mainsail 50-ratos
 ```
 
 Available steps:
@@ -154,8 +154,8 @@ Available steps:
 10-node
 20-klipper
 30-moonraker
-40-ratos
-50-mainsail
+40-mainsail
+50-ratos
 60-extras
 90-enable
 ```
