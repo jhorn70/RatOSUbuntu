@@ -1,5 +1,7 @@
-# RatOS on Ubuntu Server
+# Disclaimer
+This is untested ALPHA software that I generated using Codex, use at your own risk. I most likely won't be able to support this as I am low on free time.
 
+# RatOS on Ubuntu Server
 This repository installs a RatOS-style Klipper host stack on a fresh Ubuntu
 Server machine. It is derived from the RatOS CustomPIOS modules, but runs as a
 normal root installer instead of building a Raspberry Pi image.
@@ -37,16 +39,24 @@ updates and a reboot afterward.
 
 ## Install On A Machine
 
-Copy this directory to the target Ubuntu machine:
-
-```bash
-scp -r RatOSUbuntu user@machine:/tmp/RatOSUbuntu
-```
-
-Then SSH into the machine and review the config:
+SSH into the target Ubuntu machine:
 
 ```bash
 ssh user@machine
+```
+
+Install git if it is not already available, then clone this repository:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y git
+cd /tmp
+git clone https://github.com/jhorn70/RatOSUbuntu.git
+```
+
+Review the config:
+
+```bash
 cd /tmp/RatOSUbuntu
 nano config.env
 ```
