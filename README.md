@@ -100,6 +100,7 @@ Important defaults:
 - linear movement analysis enabled
 - KlipperScreen disabled
 - Raspberry Pi MCU disabled
+- LattePanda IOTA RP2040 MCU disabled
 
 Optional component flags:
 
@@ -109,10 +110,22 @@ INSTALL_TIMELAPSE=1
 INSTALL_LINEAR_MOVEMENT_ANALYSIS=1
 INSTALL_KLIPPERSCREEN=0
 INSTALL_RPI_MCU=0
+INSTALL_LATTEPANDA_IOTA_RP2040_MCU=0
 ```
 
 Leave `INSTALL_RPI_MCU=0` unless Ubuntu is running on a Raspberry Pi and you
 specifically want the Pi itself to act as a Klipper MCU.
+
+Set `INSTALL_LATTEPANDA_IOTA_RP2040_MCU=1` only on a LattePanda IOTA when you
+want the onboard RP2040 to run Klipper firmware. The RP2040 must be in
+BOOTSEL/bootloader mode for the default flash device to work:
+
+```bash
+LATTEPANDA_IOTA_RP2040_FLASH_DEVICE=2e8a:0003
+```
+
+If Klipper can already see the RP2040 over a serial path, you can override that
+with the appropriate `/dev/serial/by-id/...` device.
 
 The dependency package groups are also configurable in `config.env`, including
 `BASE_APT_DEPS`, `KLIPPER_APT_DEPS`, `RATOS_APT_DEPS`, `MAINSAIL_APT_DEPS`, and
@@ -195,3 +208,13 @@ INSTALL_RPI_MCU=1
 ```
 
 Only enable that on Raspberry Pi hardware.
+
+If you enable LattePanda IOTA RP2040 support, set this in `config.env` before
+running `60-extras`:
+
+```bash
+INSTALL_LATTEPANDA_IOTA_RP2040_MCU=1
+```
+
+Put the RP2040 in BOOTSEL/bootloader mode before running `60-extras`, or set
+`LATTEPANDA_IOTA_RP2040_FLASH_DEVICE` to a valid Klipper flash target.

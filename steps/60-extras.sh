@@ -91,3 +91,36 @@ if [[ "${INSTALL_RPI_MCU}" == "1" ]]; then
   cp "${RATOS_HOME}/klipper/scripts/klipper-mcu.service" /etc/systemd/system/klipper_mcu.service
   systemctl enable klipper_mcu.service
 fi
+
+if [[ "${INSTALL_LATTEPANDA_IOTA_RP2040_MCU}" == "1" ]]; then
+  log "Building and flashing LattePanda IOTA RP2040 Klipper firmware"
+  ensure_apt_packages_from_words "${LATTEPANDA_IOTA_RP2040_APT_DEPS}"
+
+  [[ -d "${RATOS_HOME}/klipper" ]] || die "Klipper source not found. Run 20-klipper before enabling LattePanda IOTA RP2040 MCU."
+
+  # The LattePanda IOTA exposes an onboard RP2040. Build a generic RP2040 USB
+  # Klipper image and let Klipper's flash helper handle the bootloader device.
+  write_file "${RATOS_HOME}/klipper/.config" 0644 "${RATOS_USER}" "${RATOS_USER}" <<'EOF'
+CONFIG_LOW_LEVEL_OPTIONS=y
+CONFIG_MACH_RPXXXX=y
+CONFIG_MACH_RP2040=y
+CONFIG_RPXXXX_FLASH_START_0100=y
+CONFIG_RP2040_FLASH_GENERIC_03=y
+CONFIG_RPXXXX_USB=y
+CONFIG_USB_VENDOR_ID=0x1d50
+CONFIG_USB_DEVICE_ID=0x614e
+CONFIG_USB_SERIAL_NUMBER_CHIPID=y
+EOF
+
+  make -C "${RATOS_HOME}/klipper" olddefconfig
+  grep -q '^CONFIG_MACH_RP2040=y' "${RATOS_HOME}/klipper/.config" || die "Klipper did not accept the RP2040 firmware configuration."
+  grep -q '^CONFIG_RPXXXX_USB=y' "${RATOS_HOME}/klipper/.config" || die "Klipper did not accept the RP2040 USB firmware configuration."
+  make -C "${RATOS_HOME}/klipper" clean
+  chown -R "${RATOS_USER}:${RATOS_USER}" "${RATOS_HOME}/klipper"
+  make -C "${RATOS_HOME}/klipper"
+
+  [[ -f "${RATOS_HOME}/klipper/out/klipper.uf2" ]] || die "RP2040 Klipper firmware was not built."
+
+  log "Flashing RP2040 with FLASH_DEVICE=${LATTEPANDA_IOTA_RP2040_FLASH_DEVICE}"
+  make -C "${RATOS_HOME}/klipper" flash FLASH_DEVICE="${LATTEPANDA_IOTA_RP2040_FLASH_DEVICE}"
+fi
